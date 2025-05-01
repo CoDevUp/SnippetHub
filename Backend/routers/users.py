@@ -27,17 +27,7 @@ async def register_user(user: UserCreate): #registra usuarios
     
     return {"message": "Usuario registrado exitosamente", "user": user.username}
 
-
-@router.post("/login")
-async def login_user(user: UserLogin):                #inicio de sesion
-    # Verificar las credenciales del usuario
-    for i in users_list:
-        if i.username == user.username and i.password == user.password:
-            return {"message": f"Bienvenido, {user.username}"}
     
-    raise HTTPException(status_code=401, detail="Credenciales inválidas")
-    
-
 #@app.get("/users")          #muestra los usuarios registrados
 #async def list_users():
  #   return [                                #no se que tan eficiente sea cuando hay muchos datos
