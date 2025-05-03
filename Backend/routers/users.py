@@ -28,12 +28,3 @@ async def register_user(user: UserCreate): #registra usuarios
     return {"message": "Usuario registrado exitosamente", "user": user.username}
 
     
-#@app.get("/users")          #muestra los usuarios registrados
-#async def list_users():
- #   return [                                #no se que tan eficiente sea cuando hay muchos datos
-  #      {
-   #         "username": user.username,      #muestra los usuarios registrados
-    #        "email": user.email
-     #   }
-      #  for user in users_list
-    #]
