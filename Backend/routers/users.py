@@ -1,15 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from Backend.schemas.user import UserLogin
 from Backend.models import User
-from pydantic import BaseModel
-
+from Backend.schemas.user import UserCreate
 
 router = APIRouter()
-
-class UserCreate(BaseModel):
-    username: str
-    email: str
-    password: str
 
 users_list = []
 
