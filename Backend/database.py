@@ -9,7 +9,7 @@ import os
 load_dotenv()
 
 # Leer la URL desde el archivo .env
-MONGO_URL = os.getenv("MONGO_URL")
+MONGO_URL = "mongodb+srv://jhonaguirre1:638123MARIO@cluster0.7bm1rsu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 # Crear el cliente y base de datos
 client = AsyncIOMotorClient(MONGO_URL)

@@ -5,6 +5,7 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from Backend.schemas.user import User, UserDB
+from Backend.database import db
 
 #constantes para la creacion del token
 ALGORITHM = "HS256"   #algoritmo que usaremos
@@ -17,43 +18,46 @@ oauth2 = OAuth2PasswordBearer(tokenUrl = "login") #esquema de seguridad OAuth2
 
 crypt = CryptContext(schemes=["bcrypt"])  #contexto de cifrado para las contraseñas
 
-users_db = {
-    "victor" : {
-        "username": "victor",
-        "email": "victor@gmail.com",          #simula base de datos
-        "disabled": False,
-        "password": crypt.hash("123456")  #pilas, la contraseña debe estar encriptada en la base de datos, como aqui
-    }
-}
 
-def search_user_db(username: str):  #retorna usuario completo
-    if username in users_db:
-        return UserDB(**users_db[username])   
-
-
-def search_user(username : str):  #retorna solo los datos publicos
-    if username in users_db:
-        return User(**users_db[username])
-    
+async def search_user_db(username: str): #retorna usuario completo
+    user_data = await db["users"].find_one({"username": username})
+    if user_data:
+        user_data.pop("_id", None)
+        return UserDB(**user_data)
+ 
+async def search_user(username: str):  #retorna usuario publico
+    user_data = await db["users"].find_one({"username": username})
+    if user_data:
+        user_data.pop("_id", None)
+        return User(**user_data)
 
 
 async def auth_user(token: str = Depends(oauth2)): # Verifica si el token es válido y retorna el usuario actual
 
     credentials_exception = HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Credenciales de autenticacion invalidas", \
+                detail="Credenciales de autenticacion invalidas", 
                 headers={"WWW-Authenticate": "Bearer"}
         )
 
     try:
-        username = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get("sub")
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub") 
+
         if username is None:
             raise credentials_exception
       
     except JWTError:
-        raise credentials_exception
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Credenciales de autenticacion invalidas", 
+                headers={"WWW-Authenticate": "Bearer"})
     
-    return search_user(username)
+    user = await search_user(username)
+    if user is None:
+        raise credentials_exception  # Si el usuario no existe en la base de datos
+
+    return user
         
         
 
@@ -69,16 +73,16 @@ async def current_user(user: User = Depends(auth_user)):  #verifica si el usuari
 
 @router.post("/login")                                                    #hacer login y obtener el token
 async def login_user(form: OAuth2PasswordRequestForm = Depends()):
-    user_db = users_db.get(form.username)
+    user_db = await db["users"].find_one({"username": form.username})
     if not user_db:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="El usuario no es correcto")
         
-    user = search_user_db(form.username)
-
-    if not crypt.verify(form.password, user.password):
+    if not crypt.verify(form.password, user_db["password"]):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="La contraseña no es correcta")
+    
+    user = UserDB(**user_db)
     
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_DURATION)
 
