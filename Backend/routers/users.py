@@ -30,7 +30,8 @@ async def register_user(user: UserCreate):
     new_user = {
         "username": user.username,
         "email": user.email,
-        "password": crypt.hash(user.password)  # Considerar hashear la contraseña en el futuro
+        "password": crypt.hash(user.password),
+        "disabled": user.disable
     }
 
     result = await users_collection.insert_one(new_user)
