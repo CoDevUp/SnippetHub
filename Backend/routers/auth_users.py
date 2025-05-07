@@ -66,7 +66,7 @@ async def current_user(user: User = Depends(auth_user)):  #verifica si el usuari
 
 @router.post("/login")
 async def login_user(form: OAuth2PasswordRequestForm = Depends()):
-    try:
+    
         # Buscar usuario en la base de datos
         user_db = await db["users"].find_one({"username": form.username})
         if not user_db:
@@ -94,10 +94,7 @@ async def login_user(form: OAuth2PasswordRequestForm = Depends()):
             "access_token": jwt.encode(access_token, SECRET_KEY, algorithm=ALGORITHM),
             "token_type": "bearer",
         }
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error interno del servidor: {str(e)}"
-        )
+   
 
 @router.get("/users/me")  #Ruta protegida para obtener los datos del usuario (Requiere token)
 async def me(user: User = Depends(current_user)):

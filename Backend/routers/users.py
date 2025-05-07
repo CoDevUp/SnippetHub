@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from Backend.schemas.user import UserCreate
 from passlib.context import CryptContext
 
@@ -9,7 +9,7 @@ crypt = CryptContext(schemes=["bcrypt"])
 router = APIRouter()
 
 @router.post("/register")
-async def register_user(user: UserCreate):
+async def register_user(user: UserCreate = Depends(UserCreate.as_form)):
     users_collection = db["users"]
 
     # Verificar si el usuario ya existe en la base de datos
