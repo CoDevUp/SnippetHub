@@ -16,8 +16,8 @@ class UserCreate(BaseModel):
     password: str 
     disable: bool = False
 
-@classmethod
-def as_form(
+    @classmethod
+    def as_form(
         cls,
         username: str = Form(...),
         email: str = Form(...),
