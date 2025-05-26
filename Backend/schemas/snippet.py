@@ -5,7 +5,7 @@ from typing import Optional
 class SnippetBase(BaseModel):
     title: str
     content: str
-    languaje: str
+    language: str
 
 
 class Snippet(SnippetBase):
