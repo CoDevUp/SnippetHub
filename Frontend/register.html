@@ -1,30 +1,24 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    
-    <title>Snippets Hub</title>
-    <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <title>Registrarse - SnippetHub</title>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-    <h1><span class="mov-left">User Registration</span></h1>
+  <h1>Registrarse</h1>
+  <form id="register-form">
+    <label>Usuario: <input type="text" name="username" required></label><br>
+    <label>Email: <input type="email" name="email" required></label><br>
+    <label>Contraseña: <input type="password" name="password" required></label><br>
+    <label>Desactivar cuenta: <input type="checkbox" name="disable"></label><br>
+    <button type="submit">Registrarse</button>
+  </form>
+  <p id="register-msg"></p>
 
-    <form action="http://127.0.0.1:8000/register" method="post">
-       
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" placeholder="Ej. user123" required/>
-        <br><br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Ej. user@example.com" required/>
-        <br><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Your secure password" required>
-        <br><br>
-
-        <input type="submit" value="Register"/>
-    </form>
-
-    
+  <script src="js/api.js"></script>
+  <script src="js/register.js"></script>
 </body>
 </html>

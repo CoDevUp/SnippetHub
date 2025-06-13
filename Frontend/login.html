@@ -1,26 +1,22 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    
-    <title>Snippets Hub</title>
-    <link rel="stylesheet" href="styles.css" />
-</heads>
+  <meta charset="UTF-8">
+  <title>Iniciar Sesión - SnippetHub</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
 <body>
-    <h1><span class="mov-left">User Login</span></h1>
+  <h1>Iniciar sesión</h1>
+  <form id="login-form">
+    <label>Usuario: <input type="text" name="username" required></label><br>
+    <label>Contraseña: <input type="password" name="password" required></label><br>
+    <button type="submit">Ingresar</button>
+  </form>
+  <p id="error-msg" style="color:red;"></p>
 
-    <form action="http://127.0.0.1:8000/login" method="post">
-       
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" placeholder="Ej. user123" required/>
-        <br><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Your secure password" required>
-        <br><br>
-
-        <input type="submit" value="Login"/>
-    </form>
-
-    
+  <script src="js/api.js"></script>
+  <script src="js/login.js"></script>
 </body>
 </html>

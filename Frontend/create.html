@@ -1,0 +1,23 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Snippet - SnippetHub</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <h1>Crear nuevo Snippet</h1>
+  <form id="snippet-form">
+    <label>Título: <input type="text" name="title" required></label><br>
+    <label>Lenguaje: <input type="text" name="language" required></label><br>
+    <label>Contenido:<br><textarea name="content" rows="8" cols="50" required></textarea></label><br>
+    <button type="submit">Publicar</button>
+  </form>
+  <p id="create-msg"></p>
+
+  <script src="js/api.js"></script>
+  <script src="js/create.js"></script>
+</body>
+</html>
