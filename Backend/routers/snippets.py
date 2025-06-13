@@ -11,7 +11,7 @@ snippet_collection = db["snippets"]
 
 # Convertir el _id de Mongo a string
 def serialize_snippet(snippet) -> dict:
-    snippet["_id"] = str(snippet["_id"])  # Asegúrate de que sea string
+    snippet["_id"] = str(snippet["_id"])  
     return snippet
 
 
